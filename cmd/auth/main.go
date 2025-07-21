@@ -3,6 +3,8 @@ package main
 import (
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/SergeyGolang/grpc-auth/internal/app"
 	"github.com/SergeyGolang/grpc-auth/internal/config"
@@ -25,11 +27,23 @@ func main() {
 
 	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
 
-	application.GRPCSrv.MustRun()
+	go application.GRPCSrv.MustRun()
 
 	// TODO: init app
 
 	// TODO: start gRPC-server app
+
+	// Graceful shutdown
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+
+	// Здесь мы ждём пока в нашу горутину не придёт сигнал и если сигнал придёт, то мы делаем Graceful shutdown
+	sign := <-stop
+
+	log.Info("stopping application", slog.String("signal", sign.String()))
+
+	log.Info("application stopped")
 }
 
 func setupLogger(env string) *slog.Logger {
