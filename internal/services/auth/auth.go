@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/SergeyGolang/grpc-auth/internal/domain/models"
+	"github.com/SergeyGolang/grpc-auth/internal/lib/jwt"
 	"github.com/SergeyGolang/grpc-auth/internal/lib/logger/sl"
-	"github.com/SergeyGolang/grpc-auth/internal/lib/logger/sl/jwt"
 	"github.com/SergeyGolang/grpc-auth/internal/storage"
 	"golang.org/x/crypto/bcrypt"
 )
