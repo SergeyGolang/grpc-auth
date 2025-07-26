@@ -25,13 +25,10 @@ func main() {
 
 	log.Info("starting applications!")
 
+	// TODO: start gRPC-server app
 	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
 
 	go application.GRPCSrv.MustRun()
-
-	// TODO: init app
-
-	// TODO: start gRPC-server app
 
 	// Graceful shutdown
 
@@ -42,6 +39,8 @@ func main() {
 	sign := <-stop
 
 	log.Info("stopping application", slog.String("signal", sign.String()))
+
+	application.GRPCSrv.Stop()
 
 	log.Info("application stopped")
 }
