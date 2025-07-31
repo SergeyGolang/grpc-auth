@@ -26,6 +26,11 @@ func MustLoad() *Config {
 		log.Fatal("CONFIG_PATH is not set")
 	}
 
+	return MustLoadByPath(configPath)
+}
+
+func MustLoadByPath(configPath string) *Config {
+
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		log.Fatalf("config file does not exist: %s", configPath)
 	}
